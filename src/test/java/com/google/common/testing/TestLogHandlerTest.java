@@ -16,8 +16,12 @@
 
 package com.google.common.testing;
 
-import com.google.common.testing.junit3.TearDownTestCase;
-
+import com.google.common.testing.junit4.TearDownTestCase;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
@@ -27,13 +31,13 @@ import java.util.logging.Logger;
  *
  * @author kevinb
  */
+@RunWith(JUnit4.class)
 public class TestLogHandlerTest extends TearDownTestCase {
 
   private TestLogHandler handler;
 
-  @Override protected void setUp() throws Exception {
-    super.setUp();
-
+   @Before
+   public void setUp() throws Exception {
     handler = new TestLogHandler();
 
     // You could also apply it higher up the Logger hierarchy than this
@@ -49,19 +53,21 @@ public class TestLogHandlerTest extends TearDownTestCase {
     });
   }
 
+  @Test
   public void test() throws Exception {
-    assertTrue(handler.getStoredLogRecords().isEmpty());
+    Assert.assertTrue(handler.getStoredLogRecords().isEmpty());
     ExampleClassUnderTest.foo();
     LogRecord record = handler.getStoredLogRecords().iterator().next();
-    assertEquals(Level.INFO, record.getLevel());
-    assertEquals("message", record.getMessage());
-    assertSame(EXCEPTION, record.getThrown());
+    Assert.assertEquals(Level.INFO, record.getLevel());
+    Assert.assertEquals("message", record.getMessage());
+    Assert.assertSame(EXCEPTION, record.getThrown());
   }
 
+  @Test
   public void testConcurrentModification() throws Exception {
     // Tests for the absence of a bug where logging while iterating over the
     // stored log records causes a ConcurrentModificationException
-    assertTrue(handler.getStoredLogRecords().isEmpty());
+    Assert.assertTrue(handler.getStoredLogRecords().isEmpty());
     ExampleClassUnderTest.foo();
     ExampleClassUnderTest.foo();
     for (LogRecord record : handler.getStoredLogRecords()) {

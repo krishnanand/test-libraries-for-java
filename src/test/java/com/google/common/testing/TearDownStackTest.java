@@ -16,11 +16,9 @@
 
 package com.google.common.testing;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
 import com.google.common.testing.junit4.TearDownTestCase;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -35,11 +33,11 @@ public class TearDownStackTest extends TearDownTestCase {
     final SimpleTearDown tearDown = new SimpleTearDown();
     stack.addTearDown(tearDown);
     
-    assertEquals(false, tearDown.ran);
+    Assert.assertEquals(false, tearDown.ran);
     
     stack.runTearDown();
 
-    assertEquals("tearDown should have run", true, tearDown.ran);
+    Assert.assertEquals("tearDown should have run", true, tearDown.ran);
   }
 
   @Test
@@ -51,21 +49,22 @@ public class TearDownStackTest extends TearDownTestCase {
 
     final Callback callback = new Callback() {
       public void run() {
-        assertEquals("tearDownTwo should have been run before tearDownOne",
-          false, tearDownOne.ran);
+        Assert.assertEquals("tearDownTwo should have been run before " +
+                "tearDownOne",
+                false, tearDownOne.ran);
       }
     };
     
     final SimpleTearDown tearDownTwo = new SimpleTearDown(callback);
     stack.addTearDown(tearDownTwo);
     
-    assertEquals(false, tearDownOne.ran);
-    assertEquals(false, tearDownTwo.ran);
+    Assert.assertEquals(false, tearDownOne.ran);
+    Assert.assertEquals(false, tearDownTwo.ran);
     
     stack.runTearDown();
 
-    assertEquals("tearDownOne should have run", true, tearDownOne.ran);
-    assertEquals("tearDownTwo should have run", true, tearDownTwo.ran);
+    Assert.assertEquals("tearDownOne should have run", true, tearDownOne.ran);
+    Assert.assertEquals("tearDownTwo should have run", true, tearDownTwo.ran);
   }
 
   @Test
@@ -78,21 +77,21 @@ public class TearDownStackTest extends TearDownTestCase {
     final ThrowingTearDown tearDownTwo = new ThrowingTearDown("two");
     stack.addTearDown(tearDownTwo);
 
-    assertEquals(false, tearDownOne.ran);
-    assertEquals(false, tearDownTwo.ran);
+    Assert.assertEquals(false, tearDownOne.ran);
+    Assert.assertEquals(false, tearDownTwo.ran);
     
     try {
       stack.runTearDown();
-      fail("runTearDown should have thrown an exception");
+      Assert.fail("runTearDown should have thrown an exception");
     } catch (ClusterException expected) {
-      assertEquals("two", expected.getCause().getMessage());
+      Assert.assertEquals("two", expected.getCause().getMessage());
     } catch (RuntimeException e) {
       throw new RuntimeException(
         "A ClusterException should have been thrown, rather than a " + e.getClass().getName(), e);
     }
 
-    assertEquals(true, tearDownOne.ran);
-    assertEquals(true, tearDownTwo.ran);
+    Assert.assertEquals(true, tearDownOne.ran);
+    Assert.assertEquals(true, tearDownTwo.ran);
   }
 
   /**
@@ -104,9 +103,9 @@ public class TearDownStackTest extends TearDownTestCase {
     addTearDown(new TearDown() {
       
       public void tearDown() throws Exception {
-        assertEquals(
-          "The test should have cleared the stack (say, by virtue of running runTearDown)",
-          0, result.stack.size());
+        Assert.assertEquals(
+                "The test should have cleared the stack (say, by virtue of running runTearDown)",
+                0, result.stack.size());
       }
     });
     return result;
