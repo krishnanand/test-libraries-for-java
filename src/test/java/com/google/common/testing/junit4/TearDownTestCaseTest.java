@@ -16,13 +16,16 @@
 
 package com.google.common.testing.junit4;
 
-import static com.google.common.testing.junit4.JUnitAsserts.assertContentsInOrder;
-
 import com.google.common.testing.TearDown;
 import com.google.common.testing.TearDownStack;
 import com.google.common.testing.TestLogHandler;
 
-import junit.framework.TestCase;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,13 +35,15 @@ import java.util.List;
  *
  * @author kevinb
  */
-public class TearDownTestCaseTest extends TestCase {
+@RunWith(JUnit4.class)
+public class TearDownTestCaseTest {
   
   private TearDownTestCase test;
   private List<String> messages;
   private TestLogHandler handler;
 
-  @Override protected void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {
     test = new TearDownTestCase() {};
     messages = new ArrayList<String>();
     handler = new TestLogHandler();
@@ -46,6 +51,7 @@ public class TearDownTestCaseTest extends TestCase {
     TearDownStack.logger.setUseParentHandlers(false);
   }
 
+  @Test
   public void testAdHocTearDownObject() throws Exception {
     final SomeObject obj = new SomeObject("a");
     test.addTearDown(new TearDown() {
@@ -55,34 +61,38 @@ public class TearDownTestCaseTest extends TestCase {
     });
 
     test.tearDownRule.stack.runTearDown();
-    assertContentsInOrder(messages, "a");
+    JUnitAsserts.assertContentsInOrder(messages, "a");
   }
 
+  @Test
   public void testReusableTearDownObject() throws Exception {
     SomeObject obj = new SomeObject("b");
     test.addTearDown(new SomeObjectTearDown(obj));
 
     test.tearDownRule.stack.runTearDown();
-    assertContentsInOrder(messages, "b");
+    JUnitAsserts.assertContentsInOrder(messages, "b");
   }
 
+  @Test
   public void testSelfCleaningObject() throws Exception {
     TidyObject obj = new TidyObject("c");
     test.addTearDown(obj);
 
     test.tearDownRule.stack.runTearDown();
-    assertContentsInOrder(messages, "c");
+    JUnitAsserts.assertContentsInOrder(messages, "c");
   }
 
+  @Test
   public void testReverseOrder() throws Exception {
     test.addTearDown(new TidyObject("x"));
     test.addTearDown(new TidyObject("y"));
     test.addTearDown(new TidyObject("z"));
 
     test.tearDownRule.stack.runTearDown();
-    assertContentsInOrder(messages, "z", "y", "x");
+    JUnitAsserts.assertContentsInOrder(messages, "z", "y", "x");
   }
 
+  @Test
   public void testTearDownFailure() throws Exception {
     test.addTearDown(new TidyObject("before"));
     test.addTearDown(new FailingTearDown());
@@ -90,28 +100,30 @@ public class TearDownTestCaseTest extends TestCase {
 
     try {
       test.tearDownRule.stack.runTearDown();
-      fail();
+      Assert.fail();
     } catch (RuntimeException expected) {
     }
-    assertContentsInOrder(messages, "after", "whoops", "before");
+    JUnitAsserts.assertContentsInOrder(messages, "after", "whoops", "before");
   }
 
+  @Test
   public void testDontSkipOptionalTearDowns() throws Exception {
     test.addTearDown(new TidyObject("sometimes"));
     test.addTearDown(new TidyObject("always"));
     test.tearDownRule.stack.runTearDown();
-    assertContentsInOrder(messages, "always", "sometimes");
+    JUnitAsserts.assertContentsInOrder(messages, "always", "sometimes");
   }
 
+  @Test
   public void testWithNoTestEnvironments() throws Throwable {
     test.tearDownRule.stack.runTearDown();
   }
 
   /** This is deeply ironic. */
-  @Override protected void tearDown() throws Exception {
+  @After
+  public void tearDown() throws Exception {
     TearDownStack.logger.removeHandler(handler);
     TearDownStack.logger.setUseParentHandlers(true);
-    super.tearDown();
   }
 
   private static class SomeObject {

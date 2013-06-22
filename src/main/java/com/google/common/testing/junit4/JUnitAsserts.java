@@ -16,7 +16,7 @@
 
 package com.google.common.testing.junit4;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -12,26 +12,17 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+*/
 
 package com.google.common.testing;
 
-import com.google.common.testing.junit3.TearDownTestCaseTest;
+import com.google.common.testing.junit4.JUnitAssertsTest;
+import com.google.common.testing.junit4.TearDownTestCaseTest;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
-public class AllTests {
-
-  public static Test suite() {
-    TestSuite suite = new TestSuite("Test for com.google.common.testing");
-    //$JUnit-BEGIN$
-    suite.addTestSuite(TestLogHandlerTest.class);
-    suite.addTestSuite(com.google.common.testing.junit3.JUnitAssertsTest.class);
-    suite.addTestSuite(com.google.common.testing.junit4.JUnitAssertsTest.class);
-    suite.addTestSuite(TearDownTestCaseTest.class);
-    //$JUnit-END$
-    return suite;
-  }
-
-}
+@RunWith(Suite.class)
+@Suite.SuiteClasses(
+    {JUnitAssertsTest.class, TearDownTestCaseTest.class,
+     TearDownStackTest.class, TestLogHandlerTest.class})
+public class AllTests {}
