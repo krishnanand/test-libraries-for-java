@@ -17,7 +17,6 @@
   <artifactId>test-libraries-for-java</artifactId>
   <version>1.2</version>
 
-    <!--
   <profiles>
     <profile>
       <id>junit4-only</id>
@@ -97,8 +96,59 @@
         </plugins>
       </build>
     </profile>
+    <profile>
+       <id>testng</id>
+       <build>
+           <finalName>tl4j</finalName>
+           <plugins>
+               <plugin>
+                   <artifactId>maven-jar-plugin</artifactId>
+                   <executions>
+                       <execution>
+                           <phase>package</phase>
+                           <goals>
+                               <goal>jar</goal>
+                           </goals>
+                           <configuration>
+                               <classifier>testng-${project.version}</classifier>
+                               <includes>
+                                   <include>**/common/testing/*.class</include>
+                                   <include>**/testng/*</include>
+                               </includes>
+                           </configuration>
+                       </execution>
+                   </executions>
+               </plugin>
+           </plugins>
+       </build>
+      </profile>
+      <profile>
+          <id>testng-only</id>
+          <build>
+              <finalName>tl4j</finalName>
+              <plugins>
+                  <plugin>
+                      <artifactId>maven-jar-plugin</artifactId>
+                      <executions>
+                          <execution>
+                              <phase>package</phase>
+                              <goals>
+                                  <goal>jar</goal>
+                              </goals>
+                              <configuration>
+                                  <classifier>testng-${project.version}</classifier>
+                                  <includes>
+                                     <include>**/testng/*</include>
+                                  </includes>
+                              </configuration>
+                          </execution>
+                      </executions>
+                  </plugin>
+              </plugins>
+          </build>
+      </profile>
   </profiles>
-   -->
+
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -109,7 +159,6 @@
           <groupId>org.testng</groupId>
           <artifactId>testng</artifactId>
           <version>6.3.1</version>
-          <scope>test</scope>
       </dependency>
       <dependency>
           <groupId>org.apache.maven.plugins</groupId>
