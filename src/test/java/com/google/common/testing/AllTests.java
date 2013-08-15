@@ -24,5 +24,6 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses(
     {JUnitAssertsTest.class, TearDownTestCaseTest.class,
-     TearDownStackTest.class, TestLogHandlerTest.class})
+     TearDownStackTest.class, TestLogHandlerTest.class,
+        com.google.common.testing.testng.TearDownTestCase.class})
 public class AllTests {}

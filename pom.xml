@@ -18,6 +18,7 @@
   <version>1.2</version>
 
   <profiles>
+
     <profile>
       <id>junit4-only</id>
       <build>
@@ -96,6 +97,7 @@
         </plugins>
       </build>
     </profile>
+
     <profile>
        <id>testng</id>
        <build>
@@ -122,6 +124,7 @@
            </plugins>
        </build>
       </profile>
+
       <profile>
           <id>testng-only</id>
           <build>
@@ -168,7 +171,6 @@
       </dependency>
   </dependencies>
 
-
   <build>
    <!--  <finalName>tl4j</finalName>       -->
     <plugins>
@@ -179,7 +181,6 @@
           <target>1.6</target>
         </configuration>
       </plugin>
-
       <plugin>
         <artifactId>maven-eclipse-plugin</artifactId>
         <configuration>

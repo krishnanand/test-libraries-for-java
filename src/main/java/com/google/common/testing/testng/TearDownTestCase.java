@@ -5,7 +5,9 @@ import com.google.common.testing.TearDown;
 import com.google.common.testing.TearDownAccepter;
 import com.google.common.testing.TearDownStack;
 
-import org.testng.annotations.AfterMethod;
+import org.testng.IConfigurable;
+import org.testng.IConfigureCallBack;
+import org.testng.ITestResult;
 
 /**
  * A base class for test cases that want to register tear down operations
@@ -106,21 +108,25 @@ import org.testng.annotations.AfterMethod;
  * 
  * @author Kartik Kumar
  */
-public class TearDownTestCase implements TearDownAccepter {
-	
-	/** The tear down stack. */
+public class TearDownTestCase implements TearDownAccepter, IConfigurable {
+
+  /**
+   * Executes a custom configuration block and executes a tear down stack.
+   *
+   * @param iConfigureCallBack callback configuration
+   * @param iTestResult test results
+   */
+  @Override
+  public void run(
+      IConfigureCallBack iConfigureCallBack, ITestResult iTestResult) {
+    iConfigureCallBack.runConfigurationMethod(iTestResult);
+    this.tearDownStack.runTearDown();
+  }
+
+  /** The tear down stack. */
 	TearDownStack tearDownStack = new TearDownStack();
 	
 	public void addTearDown(TearDown tearDown) {
 		tearDownStack.addTearDown(tearDown);
 	}
-	
-	/**
-	 * Tear down.
-	 */
-	@AfterMethod(alwaysRun = true)
-	public final void tearDown() {
-		tearDownStack.runTearDown();
-	}
-
 }
