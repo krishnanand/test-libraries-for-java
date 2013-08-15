@@ -18,6 +18,8 @@ package com.google.common.testing;
 
 import com.google.common.testing.junit4.JUnitAssertsTest;
 import com.google.common.testing.junit4.TearDownTestCaseTest;
+import com.google.common.testing.testng.TestNGAssertsTest;
+
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -25,5 +27,6 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses(
     {JUnitAssertsTest.class, TearDownTestCaseTest.class,
      TearDownStackTest.class, TestLogHandlerTest.class,
-        com.google.common.testing.testng.TearDownTestCase.class})
+        com.google.common.testing.testng.TearDownTestCase.class,
+        TestNGAssertsTest.class})
 public class AllTests {}

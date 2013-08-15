@@ -179,6 +179,9 @@
         <configuration>
           <source>1.6</source>
           <target>1.6</target>
+            <testIncludes>
+                <testInclude>**/testing/**</testInclude>
+            </testIncludes>
         </configuration>
       </plugin>
       <plugin>
