@@ -28,7 +28,7 @@ public class TearDownTestCaseTest {
 
   @BeforeMethod
   public void setUp() {
-    tearDownTestCase = new TearDownTestCase();
+    tearDownTestCase = new TearDownTestCase(){};
     messages = new ArrayList<String>();
     handler = new TestLogHandler();
     TearDownStack.logger.addHandler(handler);

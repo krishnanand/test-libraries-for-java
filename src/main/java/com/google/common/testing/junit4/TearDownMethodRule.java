@@ -22,6 +22,7 @@ public final class TearDownMethodRule implements MethodRule, TearDownAccepter {
   /**
    * Registers a TearDown implementor which will be run after the test execution.
    */
+  @Override
   public final void addTearDown(TearDown tearDown) {
     stack.addTearDown(tearDown);
   }
@@ -30,6 +31,7 @@ public final class TearDownMethodRule implements MethodRule, TearDownAccepter {
    * Don't call this method directly -- it fullfils the {@link MethodRule}
    * interface.
    */
+  @Override
   public Statement apply(final Statement base, FrameworkMethod method, Object target) {
     return new Statement() {
       @Override
