@@ -110,6 +110,8 @@ import org.testng.ITestResult;
  */
 public class TearDownTestCase implements TearDownAccepter, IConfigurable {
 
+  final TearDownStack tearDownStack = new TearDownStack();
+
   /**
    * Executes a custom configuration block and executes a tear down stack.
    *
@@ -123,10 +125,7 @@ public class TearDownTestCase implements TearDownAccepter, IConfigurable {
     this.tearDownStack.runTearDown();
   }
 
-  /** The tear down stack. */
-	TearDownStack tearDownStack = new TearDownStack();
-	
-	public void addTearDown(TearDown tearDown) {
-		tearDownStack.addTearDown(tearDown);
+ 	public void addTearDown(TearDown tearDown) {
+		this. tearDownStack.addTearDown(tearDown);
 	}
 }
