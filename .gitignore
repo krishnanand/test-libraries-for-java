@@ -4,7 +4,7 @@
 *.jar
 *.war
 *.ear
-# IntelliJ specific.
-*.idea
-*.iml
+#
+.idea
 target/
+test-output/

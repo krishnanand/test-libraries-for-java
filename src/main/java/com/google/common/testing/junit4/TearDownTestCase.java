@@ -108,6 +108,7 @@ public abstract class TearDownTestCase implements TearDownAccepter {
   /**
    * Registers a TearDown implementor which will be run after the test execution.
    */
+  @Override
   public final void addTearDown(TearDown tearDown) {
     tearDownRule.addTearDown(tearDown);
   }
