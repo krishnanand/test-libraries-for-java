@@ -6,6 +6,5 @@
 *.ear
 #
 .idea
-
 target/
 test-output/
