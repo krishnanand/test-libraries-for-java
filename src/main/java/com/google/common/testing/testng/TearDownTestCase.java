@@ -20,7 +20,9 @@ import com.google.common.testing.TearDown;
 import com.google.common.testing.TearDownAccepter;
 import com.google.common.testing.TearDownStack;
 
-import org.testng.annotations.AfterMethod;
+import org.testng.IHookCallBack;
+import org.testng.IHookable;
+import org.testng.ITestResult;
 
 /**
  * A base class for test cases that want to register tear down operations
@@ -121,17 +123,18 @@ import org.testng.annotations.AfterMethod;
  * 
  * @author Kartik Kumar
  */
-public abstract class TearDownTestCase implements TearDownAccepter {
+public abstract class TearDownTestCase implements TearDownAccepter, IHookable {
 
   final TearDownStack tearDownStack = new TearDownStack();
-
-  @AfterMethod
-  public void tearDown() {
-    this.tearDownStack.runTearDown();
-  }
 
   @Override
  	public void addTearDown(TearDown tearDown) {
 		this. tearDownStack.addTearDown(tearDown);
 	}
+
+  @Override
+  public void run(IHookCallBack iHookCallBack, ITestResult iTestResult) {
+    iHookCallBack.runTestMethod(iTestResult);
+    this.tearDownStack.runTearDown();
+  }
 }
