@@ -1,6 +1,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
+    <prerequisites>
+        <maven>3.0.4</maven>
+    </prerequisites>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <surefire.version>2.13</surefire.version>
+    </properties>
   <parent>
     <groupId>com.google</groupId>
     <artifactId>google</artifactId>
@@ -33,6 +40,16 @@
               </execution>
             </executions>
           </plugin>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.maven.surefire</groupId>
+                        <artifactId>surefire-junit4</artifactId>
+                        <version>${surefire.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
         </plugins>
       </build>
     </profile>
@@ -42,6 +59,16 @@
       <build>
        <finalName>tl4j</finalName>
         <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                    <testIncludes>
+                        <testInclude>**/testing/**</testInclude>
+                    </testIncludes>
+                </configuration>
+            </plugin>
           <plugin>
             <artifactId>maven-jar-plugin</artifactId>
             <executions>
@@ -59,6 +86,16 @@
               </execution>
             </executions>
           </plugin>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.maven.surefire</groupId>
+                        <artifactId>surefire-junit4</artifactId>
+                        <version>${surefire.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
         </plugins>
       </build>
     </profile>
@@ -68,6 +105,20 @@
       <build>
         <finalName>tl4j</finalName>
         <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                    <testIncludes>
+                        <testInclude>**/testing/**</testInclude>
+                        <testInclude>**/testing/junit4/**</testInclude>
+                    </testIncludes>
+                    <testExcludes>
+                        <testExclude>**/testing/testng/**</testExclude>
+                    </testExcludes>
+                </configuration>
+            </plugin>
           <plugin>
             <artifactId>maven-jar-plugin</artifactId>
             <executions>
@@ -86,9 +137,120 @@
               </execution>
             </executions>
           </plugin>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.maven.surefire</groupId>
+                        <artifactId>surefire-junit4</artifactId>
+                        <version>${surefire.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
         </plugins>
       </build>
     </profile>
+
+    <profile>
+       <id>testng</id>
+       <build>
+           <finalName>tl4j</finalName>
+           <plugins>
+               <plugin>
+                   <artifactId>maven-compiler-plugin</artifactId>
+                   <configuration>
+                       <source>1.7</source>
+                       <target>1.7</target>
+                       <testIncludes>
+                           <testInclude>**/testing/**</testInclude>
+                           <testInclude>**/testing/testng/**</testInclude>
+                       </testIncludes>
+                       <testExcludes>
+                           <testExclude>**/testing/junit4/**</testExclude>
+                       </testExcludes>
+                   </configuration>
+               </plugin>
+               <plugin>
+                   <artifactId>maven-jar-plugin</artifactId>
+                   <executions>
+                       <execution>
+                           <phase>package</phase>
+                           <goals>
+                               <goal>jar</goal>
+                           </goals>
+                           <configuration>
+                               <classifier>testng-${project.version}</classifier>
+                               <includes>
+                                   <include>**/common/testing/*.class</include>
+                                   <include>**/testng/*</include>
+                               </includes>
+                           </configuration>
+                       </execution>
+                   </executions>
+               </plugin>
+               <plugin>
+                   <artifactId>maven-surefire-plugin</artifactId>
+                      <dependencies>
+                       <dependency>
+                           <groupId>org.apache.maven.surefire</groupId>
+                           <artifactId>surefire-testng</artifactId>
+                           <version>${surefire.version}</version>
+                       </dependency>
+                   </dependencies>
+               </plugin>
+           </plugins>
+       </build>
+      </profile>
+
+      <profile>
+          <id>testng-only</id>
+          <build>
+              <finalName>tl4j</finalName>
+              <plugins>
+                  <plugin>
+                      <artifactId>maven-compiler-plugin</artifactId>
+                      <configuration>
+                          <source>1.7</source>
+                          <target>1.7</target>
+                          <testIncludes>
+                              <testInclude>**/testing/testng/**</testInclude>
+                          </testIncludes>
+                          <testExcludes>
+                              <testExclude>**/testing/**</testExclude>
+                              <testExclude>**/testing/junit4/**</testExclude>
+                          </testExcludes>
+                      </configuration>
+                  </plugin>
+                  <plugin>
+                      <artifactId>maven-jar-plugin</artifactId>
+                      <executions>
+                          <execution>
+                              <phase>package</phase>
+                              <goals>
+                                  <goal>jar</goal>
+                              </goals>
+                              <configuration>
+                                  <classifier>testng-${project.version}</classifier>
+                                  <includes>
+                                     <include>**/testng/*</include>
+                                  </includes>
+                              </configuration>
+                          </execution>
+                      </executions>
+                  </plugin>
+                  <plugin>
+                      <artifactId>maven-surefire-plugin</artifactId>
+                      <dependencies>
+                          <dependency>
+                              <groupId>org.apache.maven.surefire</groupId>
+                              <artifactId>surefire-testng</artifactId>
+                              <version>${surefire.version}</version>
+                          </dependency>
+                      </dependencies>
+                  </plugin>
+              </plugins>
+          </build>
+      </profile>
   </profiles>
 
   <dependencies>
@@ -97,19 +259,22 @@
       <artifactId>junit</artifactId>
       <version>4.10</version>
     </dependency>
+      <dependency>
+          <groupId>org.testng</groupId>
+          <artifactId>testng</artifactId>
+          <version>6.3.1</version>
+      </dependency>
+      <dependency>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>2.15</version>
+          <type>maven-plugin</type>
+      </dependency>
   </dependencies>
 
   <build>
    <!--  <finalName>tl4j</finalName>       -->
     <plugins>
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <source>1.6</source>
-          <target>1.6</target>
-        </configuration>
-      </plugin>
-
       <plugin>
         <artifactId>maven-eclipse-plugin</artifactId>
         <configuration>
@@ -135,7 +300,6 @@
           </execution>
         </executions>
       </plugin>
-
     </plugins>
   </build>
 

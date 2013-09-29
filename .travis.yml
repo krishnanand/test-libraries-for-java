@@ -1,9 +1,15 @@
 language: java
 
 jdk:
+  - openjdk7
   - oraclejdk7
 
 notifications:
   email: false
 
-script: mvn verify
+install:
+  mvn install -Dmaven.compiler.target=1.7 -Dmaven.compiler.source=1.7
+  -DskipTests=true -B
+
+script:
+  mvn test -Dmaven.compiler.target=1.7 -Dmaven.compiler.source=1.7 -B

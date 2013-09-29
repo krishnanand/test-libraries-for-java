@@ -5,4 +5,7 @@
 *.war
 *.ear
 #
+.idea
+
 target/
+test-output/
